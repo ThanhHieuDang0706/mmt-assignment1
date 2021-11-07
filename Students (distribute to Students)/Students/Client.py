@@ -78,7 +78,7 @@ class Client:
 		#self.handler()
 		self.master.destroy() # Close the gui window
 		os.remove(CACHE_FILE_NAME + str(self.sessionId) + CACHE_FILE_EXT) # Delete the cache image from video
-		rate = float(self.counter/self.frameNbr)
+		rate = float(float(self.counter)/float(self.frameNbr))
 		print '-'*60 + "\nRTP Packet Loss Rate :" + str(rate) +"\n" + '-'*60
 		sys.exit(0)
 
@@ -105,7 +105,7 @@ class Client:
 				if data:
 					rtpPacket = RtpPacket()
 					rtpPacket.decode(data)
-					print "||Received Rtp Packet #" + str(rtpPacket.seqNum()) + "|| "
+					print("Current Seq Num: " + str(currFrameNbr))
 
 					try:
 						if self.frameNbr + 1 != rtpPacket.seqNum():
@@ -125,7 +125,7 @@ class Client:
 
 			except:
 				# Stop listening upon requesting PAUSE or TEARDOWN
-				print "Didn`t receive data!"
+				# print "Didn`t receive data!"
 				if self.playEvent.isSet():
 					break
 
@@ -141,15 +141,12 @@ class Client:
 
 		cachename = CACHE_FILE_NAME + str(self.sessionId) + CACHE_FILE_EXT
 
-		try:
-			file = open(cachename, "wb")
-		except:
-			print "file open error"
-
-		try:
-			file.write(data)
-		except:
-			print "file write error"
+		
+		file = open(cachename, "wb")
+	
+	
+		file.write(data)
+		
 
 		file.close()
 
@@ -160,10 +157,10 @@ class Client:
 		try:
 			photo = ImageTk.PhotoImage(Image.open(imageFile)) #stuck here !!!!!!
 		except:
-			print "photo error"
-			print '-'*60
+			# print "photo error"
+			# print '-'*60
 			traceback.print_exc(file=sys.stdout)
-			print '-'*60
+			# print '-'*60
 
 		self.label.configure(image = photo, height=288)
 		self.label.image = photo
