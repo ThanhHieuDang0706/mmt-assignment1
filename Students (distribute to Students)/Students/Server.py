@@ -1,4 +1,4 @@
-__author__ = 'Tibbers'
+
 import sys, socket
 
 from ServerWorker import ServerWorker

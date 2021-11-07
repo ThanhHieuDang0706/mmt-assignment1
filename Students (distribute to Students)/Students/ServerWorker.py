@@ -1,4 +1,4 @@
-__author__ = 'Tibbers'
+
 
 import random, math
 import time
