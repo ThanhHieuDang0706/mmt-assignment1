@@ -37,7 +37,7 @@ class ServerWorker:
 		while True:
 			data = connSocket.recv(256)  ###
 			if data:
-				print '-'*60 + "\nData received:\n" + '-'*60
+				print "\nData received:" + data +'\n'
 				self.processRtspRequest(data)
 
 	def processRtspRequest(self, data):
@@ -55,7 +55,7 @@ class ServerWorker:
 		if requestType == self.SETUP:
 			if self.state == self.INIT:
 				# Update state
-				print "SETUP Request received\n"
+				print "PROCESSING SETUP\n"
 
 				try:
 
@@ -70,7 +70,7 @@ class ServerWorker:
 
 				# Send RTSP reply
 				self.replyRtsp(self.OK_200, seq[0])  #seq[0] the sequenceNum received from Client.py
-				print "sequenceNum is " + seq[0]
+				# print "sequenceNum is " + seq[0]
 				# Get the RTP/UDP port from the last line
 				self.clientInfo['rtpPort'] = request[2].split(' ')[3]
 				print '-'*60 + "\nrtpPort is :" + self.clientInfo['rtpPort'] + "\n" + '-'*60
@@ -79,14 +79,14 @@ class ServerWorker:
 		# Process PLAY request
 		elif requestType == self.PLAY:
 			if self.state == self.READY:
-				print '-'*60 + "\nPLAY Request Received\n" + '-'*60
+				print '-'*60 + "\nPROCESSING PLAY\n" + '-'*60
 				self.state = self.PLAYING
 
 				# Create a new socket for RTP/UDP
 				self.clientInfo["rtpSocket"] = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 				self.replyRtsp(self.OK_200, seq[0])
-				print '-'*60 + "\nSequence Number ("+ seq[0] + ")\nReplied to client\n" + '-'*60
+				# print '-'*60 + "\nSequence Number ("+ seq[0] + ")\nReplied to client\n" + '-'*60
 
 				# Create a new thread and start sending RTP packets
 				self.clientInfo['event'] = threading.Event()
@@ -100,7 +100,7 @@ class ServerWorker:
 		# Process PAUSE request
 		elif requestType == self.PAUSE:
 			if self.state == self.PLAYING:
-				print '-'*60 + "\nPAUSE Request Received\n" + '-'*60
+				print '-'*60 + "\nPROCESSING P A U S E\n" + '-'*60
 				self.state = self.READY
 
 				self.clientInfo['event'].set()
@@ -109,7 +109,7 @@ class ServerWorker:
 
 		# Process TEARDOWN request
 		elif requestType == self.TEARDOWN:
-			print '-'*60 + "\nTEARDOWN Request Received\n" + '-'*60
+			print '-'*60 + "\nPROCESSING TEARDOWN\n" + '-'*60
 
 			self.clientInfo['event'].set()
 
@@ -180,8 +180,9 @@ class ServerWorker:
 	def replyRtsp(self, code, seq):
 		"""Send RTSP reply to the client."""
 		if code == self.OK_200:
-			#print "200 OK"
+			print "200 OK"
 			reply = 'RTSP/1.0 200 OK\nCSeq: ' + seq + '\nSession: ' + str(self.clientInfo['session'])
+			print reply
 			connSocket = self.clientInfo['rtspSocket'][0]
 			connSocket.send(reply)
 

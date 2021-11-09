@@ -101,11 +101,11 @@ class Client:
 		while True:
 			try:
 				data,addr = self.rtpSocket.recvfrom(20480)
-
+				
 				if data:
 					rtpPacket = RtpPacket()
 					rtpPacket.decode(data)
-					print("Current Seq Num: " + str(currFrameNbr))
+					
 
 					try:
 						if self.frameNbr + 1 != rtpPacket.seqNum():
@@ -205,7 +205,7 @@ class Client:
 			request = "PLAY " + "\n" + str(self.rtspSeq)
 
 			self.rtspSocket.send(request)
-			print '-'*60 + "\nPLAY request sent to Server...\n" + '-'*60
+			# print '-'*60 + "\nPLAY request sent to Server...\n" + '-'*60
 			# Keep track of the sent request.
 			# self.requestSent = ...
 			self.requestSent = self.PLAY
@@ -219,7 +219,7 @@ class Client:
 			# request = ...
 			request = "PAUSE " + "\n" + str(self.rtspSeq)
 			self.rtspSocket.send(request)
-			print '-'*60 + "\nPAUSE request sent to Server...\n" + '-'*60
+			# print '-'*60 + "\nPAUSE request sent to Server...\n" + '-'*60
 			# Keep track of the sent request.
 			# self.requestSent = ...
 			self.requestSent = self.PAUSE
@@ -236,7 +236,7 @@ class Client:
 			# request = ...
 			request = "TEARDOWN " + "\n" + str(self.rtspSeq)
 			self.rtspSocket.send(request)
-			print '-'*60 + "\nTEARDOWN request sent to Server...\n" + '-'*60
+			# print '-'*60 + "\nTEARDOWN request sent to Server...\n" + '-'*60
 			# Keep track of the sent request.
 			# self.requestSent = ...
 			self.requestSent = self.TEARDOWN
