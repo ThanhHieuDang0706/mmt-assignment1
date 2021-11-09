@@ -285,17 +285,17 @@ class Client:
 						# TO COMPLETE
 						#-------------
 						# Update RTSP state.
-						print "Updating RTSP state..."
+						# print "Updating RTSP state..."
 						# self.state = ...
 						self.state = self.READY
 						# Open RTP port.
 						#self.openRtpPort()
-						print "Setting Up RtpPort for Video Stream"
+						# print "Setting Up RtpPort for Video Stream"
 						self.openRtpPort()
 
 					elif self.requestSent == self.PLAY:
 						 self.state = self.PLAYING
-						 print '-'*60 + "\nClient is PLAYING...\n" + '-'*60
+						#  print '-'*60 + "\nClient is PLAYING...\n" + '-'*60
 					elif self.requestSent == self.PAUSE:
 						 self.state = self.READY
 

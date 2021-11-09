@@ -73,7 +73,7 @@ class ServerWorker:
 				# print "sequenceNum is " + seq[0]
 				# Get the RTP/UDP port from the last line
 				self.clientInfo['rtpPort'] = request[2].split(' ')[3]
-				print '-'*60 + "\nrtpPort is :" + self.clientInfo['rtpPort'] + "\n" + '-'*60
+				print "\nrtpPort is :" + self.clientInfo['rtpPort'] + "\n" 
 				print "filename is " + filename
 
 		# Process PLAY request
@@ -94,13 +94,13 @@ class ServerWorker:
 				self.clientInfo['worker'].start()
 		# Process RESUME request
 			elif self.state == self.PAUSE:
-				print '-'*60 + "\nRESUME Request Received\n" + '-'*60
+				print  "\nRESUME Request Received\n"
 				self.state = self.PLAYING
 
 		# Process PAUSE request
 		elif requestType == self.PAUSE:
 			if self.state == self.PLAYING:
-				print '-'*60 + "\nPROCESSING P A U S E\n" + '-'*60
+				print "\nPROCESSING P A U S E\n" 
 				self.state = self.READY
 
 				self.clientInfo['event'].set()
@@ -109,7 +109,7 @@ class ServerWorker:
 
 		# Process TEARDOWN request
 		elif requestType == self.TEARDOWN:
-			print '-'*60 + "\nPROCESSING TEARDOWN\n" + '-'*60
+			print  "\nPROCESSING TEARDOWN\n" 
 
 			self.clientInfo['event'].set()
 
