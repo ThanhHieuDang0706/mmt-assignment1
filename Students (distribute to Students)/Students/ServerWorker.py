@@ -144,7 +144,7 @@ class ServerWorker:
                     address = self.clientInfo['rtspSocket'][1][0]
                     port = int(self.clientInfo['rtpPort'])
                     prb = math.floor(random.uniform(1, 100))
-                    if (prb > 5):
+                    if (prb > 2):
                         self.clientInfo['rtpSocket'].sendto(
                             self.makeRtp(data, frameNumber), (address, port))
                 except:

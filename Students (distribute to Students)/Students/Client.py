@@ -31,7 +31,7 @@ class Client:
     TOTALSIZE = 0
     PASTSTOP = 0
     TIMEEND = 0
-    TIMESTART = 0
+    TIMESTART = time.time()
 
     # Initiation..
     def __init__(self, master, serveraddr, serverport, rtpport, filename):
@@ -48,16 +48,18 @@ class Client:
         self.teardownAcked = 0
         self.connectToServer()
         self.frameNumber = 0
-        self.TIMESTART = time.time()
+        if self.state == self.INIT:
+            self.sendRtspRequest(self.SETUP)
+
     # THIS GUI IS JUST FOR REFERENCE ONLY, STUDENTS HAVE TO CREATE THEIR OWN GUI
 
     def createWidgets(self):
         """Build GUI."""
-        # Create Setup button
-        self.setup = Button(self.master, width=20, padx=3, pady=3)
-        self.setup["text"] = "Thiết lập"
-        self.setup["command"] = self.setupMovie
-        self.setup.grid(row=1, column=0, padx=2, pady=2)
+        # # Create Setup button
+        # self.setup = Button(self.master, width=20, padx=3, pady=3)
+        # self.setup["text"] = "Thiết lập"
+        # self.setup["command"] = self.setupMovie
+        # self.setup.grid(row=1, column=0, padx=2, pady=2)
 
         # Create Play button
         self.start = Button(self.master, width=20, padx=3, pady=3)
@@ -74,9 +76,9 @@ class Client:
         # Create Teardown button
         self.teardown = Button(self.master, width=20, padx=3, pady=3)
         self.teardown["text"] = "Kết thúc"
-        self.teardown["command"] = self.exitClient
+        self.teardown["command"] = self.stopMovie
         self.teardown.grid(row=1, column=3, padx=2, pady=2)
-
+        # create describe button
         self.desc = Button(self.master, width=20, padx=3, pady=3)
         self.desc["text"] = "Mô tả"
         self.desc["command"] = self.descHandler
@@ -94,8 +96,14 @@ class Client:
             # Gray button
             # self.setup["state"] = "disabled"
 
+    def stopMovie(self):
+        self.pauseMovie()
+        if tkinter.messagebox.askokcancel("Quit", "Are you sure wannt to quit"):
+            self.exitClient()
+
     def exitClient(self):
         """Teardown button handler."""
+
         if self.state != self.INIT:
             self.sendRtspRequest(self.TEARDOWN)
         # Close window
@@ -132,7 +140,7 @@ class Client:
             self.sendRtspRequest(self.PLAY)
 
     def descHandler(self):
-        print("desc")
+        print("Describe Request Sent!!!")
         self.sendRtspRequest(self.DESCRIBE)
 
     def listenRtp(self):
